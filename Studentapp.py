@@ -1,72 +1,94 @@
-# Simple Student Record Management System
-
-students = []  # This will be a list of dictionaries
+students = []
 
 def add_student():
-    name = input("Enter student's name: ")
-    age = int(input("Enter age: "))
-    subjects = input("Enter subjects (comma-separated): ").split(",")
-    marks = float(input("Enter average marks: "))
+    Name = input("Enter a Name: ")
+    Age = int(input("Enter an age: "))
+    Subject = input("Enter subjects (comma separated): ").split(",")
+    Marks = float(input("Enter marks: "))
 
     student = {
-        "name": name,
-        "age": age,
-        "subjects": tuple(subject.strip() for subject in subjects),  # tuple
-        "marks": marks
+        "name": Name,
+        "age": Age,
+        "subject": tuple(sub.strip() for sub in Subject),
+        "marks": Marks
     }
 
     students.append(student)
-    print("Student added successfully!\n")
+    print("Student added successfully.\n")
 
-def view_students():
+
+def view_student():
     if not students:
-        print("No student records found.\n")
+        print("No student found!\n")
         return
 
     for index, student in enumerate(students, start=1):
         print(f"{index}. Name: {student['name']}, Age: {student['age']}, Marks: {student['marks']}")
-        print(f"   Subjects: {', '.join(student['subjects'])}")
+        print(f"   Subjects: {', '.join(student['subject'])}")
     print()
 
-def search_student():
-    search_name = input("Enter student name to search: ")
+
+def search_students():
+    search_name = input("Enter a name to search: ")
     found = False
     for student in students:
         if student["name"].lower() == search_name.lower():
-            print(f"Found: {student}")
+            print(f"Found: {student}\n")
             found = True
             break
     if not found:
         print("Student not found.\n")
 
-def show_unique_subjects():
+
+def search_unique_subject():
     subject_set = set()
     for student in students:
-        subject_set.update(student["subjects"])
-
+        subject_set.update(student["subject"])
     print(f"All unique subjects: {subject_set}\n")
-import numpy     
+
+
+def del_student():
+    if not students:
+        print("There is no student record.\n")
+        return
+
+    name_to_delete = input("Enter the student name to delete: ").strip()
+    for i, student in enumerate(students):
+        if student["name"].lower() == name_to_delete.lower():
+            print(f"Found student record: {student}")
+            confirm = input("Are you sure you want to delete this record? (yes/no): ").strip().lower()
+            if confirm == "yes":
+                del students[i]
+                print("Student record deleted successfully.\n")
+            else:
+                print("Deletion cancelled.\n")
+            return  # Exit after processing
+    print("Student record not found.\n")
+
 
 def main():
     while True:
-        print("=== Student Record Menu  BY . AHMAD SANDHU ===")
+        print("=== Student Record Menu BY AHMAD SANDHU ===")
         print("1. Add Student")
         print("2. View All Students")
         print("3. Search Student")
         print("4. Show Unique Subjects")
-        print("5. Exit")
+        print("5. Delete Student Record")
+        print("6. Exit")
 
-        choice = input("Choose an option (1-5): ")
+        choice = input("Choose an option (1-6): ")
 
         if choice == "1":
             add_student()
         elif choice == "2":
-            view_students()
+            view_student()
         elif choice == "3":
-            search_student()
+            search_students()
         elif choice == "4":
-            show_unique_subjects()
+            search_unique_subject()
         elif choice == "5":
+            del_student()
+        elif choice == "6":
             print("Goodbye!")
             break
         else:
